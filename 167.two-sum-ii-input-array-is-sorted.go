@@ -1,3 +1,4 @@
+package main
 // @leet start
 func twoSum(numbers []int, target int) []int {
 	for x, v := range numbers {
