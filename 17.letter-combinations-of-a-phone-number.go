@@ -6,48 +6,39 @@ import (
 
 // @leet start
 func letterCombinations(digits string) []string {
-	var phoneArr = map[string][]string{
-		"2": {"a", "b", "c"},
-		"3": {"d", "e", "f"},
-		"4": {"g", "h", "i"},
-		"5": {"j", "k", "l"},
-		"6": {"m", "n", "o"},
-		"7": {"p", "q", "r", "s"},
-		"8": {"t", "u", "v"},
-		"9": {"w", "x", "y", "z"},
+	buttons := map[string]string{
+		"2": "abc",
+		"3": "def",
+		"4": "ghi",
+		"5": "jkl",
+		"6": "mno",
+		"7": "pqrs",
+		"8": "tuv",
+		"9": "wxyz",
 	}
 
-	var finalArr []string
-	digitArr := strings.Split(digits, "")
-	finalLen := len(digitArr)
+	var finalSlice []string
+	bases := strings.Split(digits, "")
+	if len(bases) < 1 {
+		return finalSlice
+	}
 
-	var loop func(string, int, int) bool
-	loop = func(final string, depthN int, charN int) bool {
-		for _, v := range phoneArr[digitArr[depthN]] {
-			finalfinal := final + v
-			if len(finalfinal) == finalLen {
-				finalArr = append(finalArr, finalfinal)
-			}
-			if len(phoneArr[digitArr[depthN]]) > charN {
-				if len(digitArr) > depthN+1 {
-					loop(finalfinal, depthN+1, 0)
-				}
-				charN++
-			}
-			finalfinal = ""
-			if charN >= len(phoneArr[digitArr[depthN]]) {
-				return false
+	var loop func(string, int)
+	loop = func(combination string, depth int) {
+		chars := strings.Split(buttons[bases[depth]], "")
+		for _, v := range chars {
+			finalString := combination + string(v)
+			if len(finalString) == len(digits) {
+				finalSlice = append(finalSlice, finalString)
+			} else {
+				loop(finalString, depth+1)
 			}
 		}
-		return true
 	}
 
-	if len(digitArr) > 0 {
-		for loop("", 0, 0) {
-		}
-	}
+	loop("", 0)
 
-	return finalArr
+	return finalSlice
 }
 
 // @leet end
