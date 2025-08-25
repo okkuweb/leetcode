@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import "sort"
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
 
 // @leet start
 /**
@@ -29,11 +35,11 @@ func largestValues(root *TreeNode) []int {
 			loop(node.Right, depth+1)
 		}
 	}
-	if (root != nil) {
+	if root != nil {
 		loop(root, 0)
 	}
 	var keys = []int{}
-	for k, _ := range final {
+	for k := range final {
 		keys = append(keys, k)
 	}
 	sort.Ints(keys)
