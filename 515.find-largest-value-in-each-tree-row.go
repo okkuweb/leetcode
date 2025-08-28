@@ -1,7 +1,5 @@
 package main
 
-import "sort"
-
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -18,14 +16,15 @@ type TreeNode struct {
  * }
  */
 func largestValues(root *TreeNode) []int {
-	final := make(map[int]int)
+	var final = []int{}
+	if root == nil {
+		return final
+	}
 	var loop func(*TreeNode, int)
 	loop = func(node *TreeNode, depth int) {
-		if _, ok := final[depth]; ok {
-			if final[depth] < node.Val {
-				final[depth] = node.Val
-			}
-		} else {
+		if len(final) <= depth {
+			final = append(final, node.Val)
+		} else if final[depth] < node.Val {
 			final[depth] = node.Val
 		}
 		if node.Left != nil {
@@ -35,20 +34,8 @@ func largestValues(root *TreeNode) []int {
 			loop(node.Right, depth+1)
 		}
 	}
-	if root != nil {
-		loop(root, 0)
-	}
-	var keys = []int{}
-	for k := range final {
-		keys = append(keys, k)
-	}
-	sort.Ints(keys)
-
-	var finalSlice = []int{}
-	for _, v := range keys {
-		finalSlice = append(finalSlice, final[v])
-	}
-	return finalSlice
+	loop(root, 0)
+	return final
 }
 
 // @leet end
